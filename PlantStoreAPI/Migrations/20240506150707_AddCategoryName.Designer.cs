@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlantStoreAPI.Data;
 
@@ -11,9 +12,10 @@ using PlantStoreAPI.Data;
 namespace PlantStoreAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240506150707_AddCategoryName")]
+    partial class AddCategoryName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -253,36 +255,6 @@ namespace PlantStoreAPI.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("PlantStoreAPI.Model.DeliveryInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CustomerID")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("IsDefault")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReceiverName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DeliveryInfos");
-                });
-
             modelBuilder.Entity("PlantStoreAPI.Model.Product", b =>
                 {
                     b.Property<string>("ProductID")
@@ -346,46 +318,6 @@ namespace PlantStoreAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductImages");
-                });
-
-            modelBuilder.Entity("PlantStoreAPI.Model.Voucher", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("DateBegin")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateEnd")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<double>("Value")
-                        .HasColumnType("float");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Vouchers");
-                });
-
-            modelBuilder.Entity("PlantStoreAPI.Model.VoucherApplied", b =>
-                {
-                    b.Property<string>("VoucherID")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("CustomerID")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("VoucherID", "CustomerID");
-
-                    b.ToTable("VoucherApplied");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

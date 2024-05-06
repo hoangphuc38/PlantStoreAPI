@@ -10,6 +10,9 @@ namespace PlantStoreAPI.Model
         public string? ProductID { get; set; }
 
         [Required, MaxLength(50)]
+        public string? CategoryName { get; set; }
+
+        [Required, MaxLength(50)]
         public string? ProductName { get; set; }      
         public string? Height { get; set; }
         public string? Temperature { get; set; }

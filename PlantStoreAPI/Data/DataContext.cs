@@ -14,9 +14,13 @@ namespace PlantStoreAPI.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<DeliveryInfo> DeliveryInfos { get; set; }
+        public DbSet<Voucher> Vouchers { get; set; }
+        public DbSet<VoucherApplied> VoucherApplied { get; set; }
 
-        protected void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<VoucherApplied>().HasKey(v => new { v.VoucherID, v.CustomerID });
             base.OnModelCreating(modelBuilder);
         }
     }

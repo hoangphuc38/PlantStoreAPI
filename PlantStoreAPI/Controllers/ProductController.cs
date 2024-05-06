@@ -20,10 +20,28 @@ namespace PlantStoreAPI.Controllers
             return Ok(await _repo.GetAll());
         }
 
+        [HttpGet("get-by-category/{categoryName}")]
+        public async Task<IActionResult> GetByCategory(string categoryName)
+        {
+            return Ok(await _repo.GetByCategory(categoryName));
+        }
+
         [HttpPost("add-product")]
         public async Task<IActionResult> Add([FromForm] ProductVM product)
         {
             return Ok(await _repo.Add(product));
+        }
+
+        [HttpPut("update-product/{productId}")]
+        public async Task<IActionResult> Update(string productId, [FromForm] ProductVM product)
+        {
+            return Ok(await _repo.Update(productId, product));
+        }
+
+        [HttpDelete("delete-product/{productId}")]
+        public async Task<IActionResult> Delete(string productId)
+        {
+            return Ok(await _repo.Delete(productId)); 
         }
     }
 }

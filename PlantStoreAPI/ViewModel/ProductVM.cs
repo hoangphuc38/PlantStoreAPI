@@ -5,6 +5,7 @@ namespace PlantStoreAPI.ViewModel
     public class ProductVM
     {
         public string? ProductName { get; set; }
+        public string? CategoryName { get; set; }
         public string? Height { get; set; }
         public string? Temperature { get; set; }
         public string? Size { get; set; }
