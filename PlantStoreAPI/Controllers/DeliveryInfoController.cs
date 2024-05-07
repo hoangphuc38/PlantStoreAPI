@@ -24,6 +24,24 @@ namespace PlantStoreAPI.Controllers
         public async Task<IActionResult> Add(DeliveryInfoVM deliveryInfo)
         {
             return Ok(await _repo.Add(deliveryInfo));
+        }       
+
+        [HttpPut("update-delivery-info")]
+        public async Task<IActionResult> Update(int deliveryID, DeliveryInfoVM deliveryInfo)
+        {
+            return Ok(await _repo.Update(deliveryID, deliveryInfo));
+        }
+
+        [HttpPut("set-default")]
+        public async Task<IActionResult> SetDefault(string customerID, int deliveryID)
+        {
+            return Ok(await _repo.SetDefault(customerID, deliveryID));
+        }
+
+        [HttpDelete("delete-address")]
+        public async Task<IActionResult> Delete(int deliveryID)
+        {
+            return Ok(await _repo.Delete(deliveryID));
         }
     }
 }

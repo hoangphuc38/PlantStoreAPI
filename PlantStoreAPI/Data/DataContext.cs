@@ -17,10 +17,12 @@ namespace PlantStoreAPI.Data
         public DbSet<DeliveryInfo> DeliveryInfos { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
         public DbSet<VoucherApplied> VoucherApplied { get; set; }
+        public DbSet<WishList> WishLists { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<VoucherApplied>().HasKey(v => new { v.VoucherID, v.CustomerID });
+            modelBuilder.Entity<WishList>().HasKey(v => new { v.CustomerID, v.ProductID });
             base.OnModelCreating(modelBuilder);
         }
     }

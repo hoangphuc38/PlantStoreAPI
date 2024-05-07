@@ -40,5 +40,67 @@ namespace PlantStoreAPI.Services
             await _context.SaveChangesAsync();
             return deliveryInfo;
         }
+        public async Task<DeliveryInfo> Delete(int deliveryID)
+        {
+            var deliveryInfo = await _context.DeliveryInfos.FindAsync(deliveryID);
+
+            if (deliveryInfo == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            _context.DeliveryInfos.Remove(deliveryInfo);
+            await _context.SaveChangesAsync();
+            return deliveryInfo;
+        }
+        public async Task<DeliveryInfo> Update(int deliveryID, DeliveryInfoVM deliveryInfoVM)
+        {
+            var deliveryInfo = await _context.DeliveryInfos.FindAsync(deliveryID);
+
+            if (deliveryInfo == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            deliveryInfo.CustomerID = deliveryInfoVM.CustomerID;
+            deliveryInfo.IsDefault = deliveryInfo.IsDefault;
+            deliveryInfo.ReceiverName = deliveryInfoVM.Name;
+            deliveryInfo.Address = deliveryInfoVM.Address;
+            deliveryInfo.Phone = deliveryInfoVM.Phone;
+
+            _context.DeliveryInfos.Update(deliveryInfo);
+            await _context.SaveChangesAsync();
+            return deliveryInfo;
+        }
+        public async Task<DeliveryInfo> SetDefault(string customerID, int deliveryID)
+        {
+            var deliveryList = await _context.DeliveryInfos.Where(c => c.CustomerID == customerID).ToListAsync();
+
+            if (deliveryList == null)
+            {
+                throw new Exception("Not found any delivery infos");
+            }
+
+            foreach (var deliveryInfo in deliveryList)
+            {
+                deliveryInfo.IsDefault = false;
+            }
+
+            _context.DeliveryInfos.UpdateRange(deliveryList);
+            await _context.SaveChangesAsync();
+
+            var deliveryInfoUpdate = await _context.DeliveryInfos.FindAsync(deliveryID);
+
+            if (deliveryInfoUpdate == null)
+            {
+                throw new Exception("Not found this delivery info");
+            }
+
+            deliveryInfoUpdate.IsDefault = true;
+            _context.DeliveryInfos.Update(deliveryInfoUpdate);
+            await _context.SaveChangesAsync();
+
+            return deliveryInfoUpdate;                                              
+        }
     }
 }

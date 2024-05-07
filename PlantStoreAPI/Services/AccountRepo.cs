@@ -45,7 +45,8 @@ namespace PlantStoreAPI.Services
             {
                 Id = await AutoID(),
                 Email = register.Email,
-                UserName = register.UserName,
+                UserName = register.UserName, 
+                //UserName chỉ cho nhập 1 từ liền. Các chữ khác như "Hoang Phuc" -> không hợp lệ
                 PhoneNumber = register.Phone,
             };
 
