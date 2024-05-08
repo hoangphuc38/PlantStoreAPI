@@ -23,17 +23,15 @@ namespace PlantStoreAPI.Model
         public string Status { get; set; } = "Pending";
         [MaxLength(500)]
         public string? Note { get; set; }
-        
-
-        [NotMapped]
-        public string? VoucherID { get; set; }
         public string? Name { get; set; }
         public string? Phone { get; set; }
         public string? Address { get; set; }
         public bool IsPaid { get; set; }
+        public string? VoucherID { get; set; }
 
         //optional
         public Customer? Customer { get; set; }
+        [NotMapped]
         public Voucher? Voucher { get; set; }
     }
 }

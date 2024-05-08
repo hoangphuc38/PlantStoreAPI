@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlantStoreAPI.Data;
 
@@ -11,9 +12,10 @@ using PlantStoreAPI.Data;
 namespace PlantStoreAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240508050915_ChangeTypeOfOrderID")]
+    partial class ChangeTypeOfOrderID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -383,36 +385,11 @@ namespace PlantStoreAPI.Migrations
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
 
-                    b.Property<string>("VoucherID")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("OrderID");
 
                     b.HasIndex("CustomerID");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("PlantStoreAPI.Model.OrderDetail", b =>
-                {
-                    b.Property<string>("OrderID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProductID")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("didFeedback")
-                        .HasColumnType("bit");
-
-                    b.HasKey("OrderID", "ProductID");
-
-                    b.HasIndex("ProductID");
-
-                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("PlantStoreAPI.Model.Product", b =>
@@ -625,17 +602,6 @@ namespace PlantStoreAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("PlantStoreAPI.Model.OrderDetail", b =>
-                {
-                    b.HasOne("PlantStoreAPI.Model.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("PlantStoreAPI.Model.WishList", b =>

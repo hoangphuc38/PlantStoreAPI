@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlantStoreAPI.Data;
 
@@ -11,9 +12,10 @@ using PlantStoreAPI.Data;
 namespace PlantStoreAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240508034704_AddOrder_OrderDetail_Feedback")]
+    partial class AddOrder_OrderDetail_Feedback
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,26 +222,6 @@ namespace PlantStoreAPI.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("PlantStoreAPI.Model.Cart", b =>
-                {
-                    b.Property<string>("CustomerID")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ProductID")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("CustomerID", "ProductID");
-
-                    b.HasIndex("ProductID");
-
-                    b.ToTable("Carts");
-                });
-
             modelBuilder.Entity("PlantStoreAPI.Model.Customer", b =>
                 {
                     b.Property<string>("ID")
@@ -383,9 +365,6 @@ namespace PlantStoreAPI.Migrations
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
 
-                    b.Property<string>("VoucherID")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("OrderID");
 
                     b.HasIndex("CustomerID");
@@ -395,8 +374,8 @@ namespace PlantStoreAPI.Migrations
 
             modelBuilder.Entity("PlantStoreAPI.Model.OrderDetail", b =>
                 {
-                    b.Property<string>("OrderID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
 
                     b.Property<string>("ProductID")
                         .HasMaxLength(50)
@@ -584,25 +563,6 @@ namespace PlantStoreAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("PlantStoreAPI.Model.Cart", b =>
-                {
-                    b.HasOne("PlantStoreAPI.Model.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PlantStoreAPI.Model.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("PlantStoreAPI.Model.Feedback", b =>

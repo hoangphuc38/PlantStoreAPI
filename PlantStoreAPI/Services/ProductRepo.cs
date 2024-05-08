@@ -22,11 +22,12 @@ namespace PlantStoreAPI.Services
 
             foreach (var product in products)
             {
-                product.ReviewPoint = 0; //await GetAvgPoint(product.ProductID);
-                product.Sold = 0; //await Sold(product.ProductID);    
-                product.Images = await _context.ProductImages
-                                    .Where(c => c.ProductId == product.ProductID)
-                                    .ToListAsync();
+                if (product.ProductID != null)
+                {
+                    product.Images = await _context.ProductImages
+                                        .Where(c => c.ProductId == product.ProductID)
+                                        .ToListAsync();
+                }              
             }
 
             return products;
@@ -188,14 +189,18 @@ namespace PlantStoreAPI.Services
 
             return ID + numeric;
         }
-        //public async Task<double> GetAvgPoint(string productID)
-        //{
-        //    return 0; //Bổ sung sau khi tạo bảng Feedback
-        //}
+        public async Task<double> GetAvgPoint(string productID)
+        {
+            return await _context.Feedbacks.Where(f => f.ProductID == productID)
+                .Select(f => f.Point)
+                .AverageAsync();
+        }
 
-        //public async Task<int> Sold(string productID)
-        //{
-        //    return 0; //Bổ sung sau khi tạo bảng Order
-        //}
+        public async Task<double> Sold(string productID)
+        {
+            return await _context.Products.Where(c => c.ProductID == productID)
+                                          .Select(c => c.Sold)
+                                          .FirstOrDefaultAsync();
+        }
     }
 }

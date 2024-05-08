@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlantStoreAPI.Data;
 
@@ -11,9 +12,10 @@ using PlantStoreAPI.Data;
 namespace PlantStoreAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240508051011_ChangeOrderDetailID")]
+    partial class ChangeOrderDetailID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -382,9 +384,6 @@ namespace PlantStoreAPI.Migrations
 
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
-
-                    b.Property<string>("VoucherID")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OrderID");
 
