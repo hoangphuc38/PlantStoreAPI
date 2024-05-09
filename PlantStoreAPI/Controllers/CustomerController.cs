@@ -20,7 +20,7 @@ namespace PlantStoreAPI.Controllers
             return Ok(await _repo.GetInfo(customerID));
         }
 
-        [HttpPost("update-info/{customerID}")]
+        [HttpPut("update-info/{customerID}")]
         public async Task<IActionResult> UpdateInfo(string customerID, CustomerVM customer)
         {
             return Ok(await _repo.UpdateInfo(customerID, customer));
