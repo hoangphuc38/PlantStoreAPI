@@ -79,8 +79,10 @@ builder.Services.AddScoped<ICartRepo, CartRepo>();
 builder.Services.AddScoped<IOrderRepo, OrderRepo>();
 builder.Services.AddScoped<IOrderDetailRepo, OrderDetailRepo>();
 builder.Services.AddScoped<IFeedbackRepo, FeedbackRepo>();
+builder.Services.AddScoped<IStatRepo, StatRepo>();
 builder.Services.AddScoped<IVoucherRepo, VoucherRepo>();
 builder.Services.AddScoped<IWishListRepo, WishListRepo>();
+
 
 builder.Services.AddSingleton<JWTManger>();
 builder.Services.AddSingleton<UploadImage>();
