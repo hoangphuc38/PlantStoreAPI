@@ -91,5 +91,11 @@ namespace PlantStoreAPI.Controllers
                 });
             }
         }
+
+        [HttpGet("search-by-id")]
+        public async Task<IActionResult> SearchByID(string orderID)
+        {
+            return Ok(await _repo.SearchByID(orderID));
+        }
     }
 }

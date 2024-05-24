@@ -10,5 +10,6 @@ namespace PlantStoreAPI.Repositories
         Task<Voucher> Add(VoucherVM voucher);
         Task<Voucher> Delete(string voucherId);
         Task<Voucher> Update(string voucherId, VoucherVM voucher);
+        Task<List<Voucher>> SearchByName(string name);
     }
 }

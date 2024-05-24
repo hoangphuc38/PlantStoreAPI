@@ -10,6 +10,7 @@ namespace PlantStoreAPI.Repositories
         Task<Product> Add(ProductVM productVM);
         Task<Product> Update(string productID, ProductVM productVM);
         Task<Product> Delete(string productID);
+        Task<List<Product>> SearchByName(string name);
         
     }
 }

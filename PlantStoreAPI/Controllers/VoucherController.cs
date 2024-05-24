@@ -43,5 +43,11 @@ namespace PlantStoreAPI.Controllers
         {
             return Ok(await _repo.Delete(voucherID));
         }
+
+        [HttpGet("search-by-name")]
+        public async Task<IActionResult> SearchByName(string name)
+        {
+            return Ok(await _repo.SearchByName(name));
+        }
     }
 }

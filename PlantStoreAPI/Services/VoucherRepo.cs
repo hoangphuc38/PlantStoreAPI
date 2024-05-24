@@ -92,6 +92,11 @@ namespace PlantStoreAPI.Services
             await _context.SaveChangesAsync();
             return voucher;
         }
+        public async Task<List<Voucher>> SearchByName(string name)
+        {
+            return await _context.Vouchers.Where(c => c.Name.ToLower().Contains(name.ToLower()))
+                                                  .ToListAsync();           
+        }
         private async Task<string> AutoID()
         {
             var ID = "PK0001";

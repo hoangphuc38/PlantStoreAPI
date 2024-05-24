@@ -2,6 +2,7 @@
 using PlantStoreAPI.Data;
 using PlantStoreAPI.Model;
 using PlantStoreAPI.Repositories;
+using PlantStoreAPI.Response;
 using PlantStoreAPI.ViewModel;
 using System.Text.RegularExpressions;
 
@@ -14,11 +15,13 @@ namespace PlantStoreAPI.Services
         {
             _context = context;
         }
-        public async Task<List<Order>> GetOrders(
+        public async Task<List<OrderResponse>> GetOrders(
             int orderType = 0,
             int month = 0,
             bool today = false)
         {
+            List<OrderResponse> orderResponses = new List<OrderResponse>();
+
             var status = orderType == 0 ? "All" :
                          orderType == 1 ? "Pending" :
                          orderType == 2 ? "Packaging" :
@@ -39,10 +42,43 @@ namespace PlantStoreAPI.Services
                 orders = orders.Where(o => o.TimeCreated.Date == DateTime.Now.Date).ToList();
             }
 
-            return orders;
+            foreach (var order in orders)
+            {
+                OrderResponse orderResponse = new OrderResponse
+                {
+                    OrderID = order.OrderID,
+                    TotalPrice = order.TotalPrice,
+                    Status = order.Status,
+                };
+
+                var orderDetail = await _context.OrderDetails
+                                                .Where(c => c.OrderID == order.OrderID)
+                                                .FirstOrDefaultAsync();
+
+                if (orderDetail != null)
+                {
+                    orderResponse.FirstProduct = await _context.Products
+                                                           .Where(c => c.ProductID == orderDetail.ProductID)
+                                                           .FirstAsync();
+
+                    orderResponse.FirstProduct.Images = await _context.ProductImages
+                                                           .Where(c => c.ProductId == orderDetail.ProductID)
+                                                           .ToListAsync();
+                }
+
+                orderResponse.TotalQuantity = await _context.OrderDetails
+                                                            .Where(c => c.OrderID == order.OrderID)
+                                                            .Select(c => c.Quantity)
+                                                            .SumAsync();
+                orderResponses.Add(orderResponse);
+            }
+
+            return orderResponses;
         }
-        public async Task<List<Order>> GetByCustomer(string customerID, int orderType)
+        public async Task<List<OrderResponse>> GetByCustomer(string customerID, int orderType)
         {
+            List<OrderResponse> orderResponses = new List<OrderResponse>();
+
             var status = orderType == 0 ? "All" :
                          orderType == 1 ? "Pending" :
                          orderType == 2 ? "Packaging" :
@@ -50,21 +86,56 @@ namespace PlantStoreAPI.Services
                          orderType == 4 ? "Completed" :
                          "Canceled";
 
+            List<Order> orders = new List<Order>();
+
             if (status == "All")
             {
-                return await _context.Orders
-                    .OrderByDescending(x => x.TimeCreated)
-                    .Where(o => o.CustomerID == customerID)
-                    .ToListAsync();
+                orders = await _context.Orders
+                                           .OrderByDescending(x => x.TimeCreated)
+                                           .Where(o => o.CustomerID == customerID)
+                                           .ToListAsync();               
             }
             else
             {
-                return await _context.Orders
-                    .Where(o => o.CustomerID == customerID &&
-                                o.Status == status)
-                    .OrderByDescending(x => x.TimeCreated)
-                    .ToListAsync();
+                orders = await _context.Orders
+                                           .Where(o => o.CustomerID == customerID &&
+                                                       o.Status == status)
+                                           .OrderByDescending(x => x.TimeCreated)
+                                           .ToListAsync();
             }
+
+            foreach (var order in orders)
+            {
+                OrderResponse orderResponse = new OrderResponse
+                {
+                    OrderID = order.OrderID,
+                    TotalPrice = order.TotalPrice,
+                    Status = order.Status,
+                };
+
+                var orderDetail = await _context.OrderDetails
+                                                .Where(c => c.OrderID == order.OrderID)
+                                                .FirstOrDefaultAsync();
+
+                if (orderDetail != null)
+                {
+                    orderResponse.FirstProduct = await _context.Products
+                                                           .Where(c => c.ProductID == orderDetail.ProductID)
+                                                           .FirstAsync();
+
+                    orderResponse.FirstProduct.Images = await _context.ProductImages
+                                                           .Where(c => c.ProductId == orderDetail.ProductID)
+                                                           .ToListAsync();
+                }
+
+                orderResponse.TotalQuantity = await _context.OrderDetails
+                                                            .Where(c => c.OrderID == order.OrderID)
+                                                            .Select(c => c.Quantity)
+                                                            .SumAsync();
+                orderResponses.Add(orderResponse);
+            }
+
+            return orderResponses;
         }
         public async Task<Order> Add(OrderVM orderVM)
         {
@@ -295,6 +366,45 @@ namespace PlantStoreAPI.Services
             await _context.SaveChangesAsync();
 
             return order;
+        }
+        public async Task<List<OrderResponse>> SearchByID(string orderID)
+        {
+            List<OrderResponse> orderResponses = new List<OrderResponse>();
+
+            var orders = await _context.Orders.Where(c => c.OrderID.Contains(orderID)).ToListAsync();
+
+            foreach (var order in orders)
+            {
+                OrderResponse orderResponse = new OrderResponse
+                {
+                    OrderID = order.OrderID,
+                    TotalPrice = order.TotalPrice,
+                    Status = order.Status,
+                };
+
+                var orderDetail = await _context.OrderDetails
+                                                .Where(c => c.OrderID == order.OrderID)
+                                                .FirstOrDefaultAsync();
+
+                if (orderDetail != null)
+                {
+                    orderResponse.FirstProduct = await _context.Products
+                                                           .Where(c => c.ProductID == orderDetail.ProductID)
+                                                           .FirstAsync();
+
+                    orderResponse.FirstProduct.Images = await _context.ProductImages
+                                                           .Where(c => c.ProductId == orderDetail.ProductID)
+                                                           .ToListAsync();
+                }
+
+                orderResponse.TotalQuantity = await _context.OrderDetails
+                                                            .Where(c => c.OrderID == order.OrderID)
+                                                            .Select(c => c.Quantity)
+                                                            .SumAsync();
+                orderResponses.Add(orderResponse);
+            }
+
+            return orderResponses;
         }
         private async Task<string> AutoID()
         {

@@ -161,6 +161,20 @@ namespace PlantStoreAPI.Services
             await _context.SaveChangesAsync();
             return product;
         }
+        public async Task<List<Product>> SearchByName(string name)
+        {
+            var products = await _context.Products.Where(c => c.ProductName.ToLower().Contains(name.ToLower()))
+                                                  .ToListAsync();
+            foreach(var product in products)
+            {
+                var productImage = await _context.ProductImages
+                                                 .Where(c => c.ProductId == product.ProductID)
+                                                 .ToListAsync();
+                product.Images = productImage;
+            }
+            
+            return products;
+        }
 
         private async Task<string> AutoID()
         {

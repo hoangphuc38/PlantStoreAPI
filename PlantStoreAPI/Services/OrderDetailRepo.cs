@@ -53,6 +53,10 @@ namespace PlantStoreAPI.Services
                         didFeedback = item.didFeedback,
                         OrderID = orderID,
                     };
+                    
+                    orderProduct.Product.Images = await _context.ProductImages
+                                                                .Where(c => c.ProductId == item.ProductID)
+                                                                .ToListAsync();     
                     vm.Products.Add(orderProduct);
                 }
             }
