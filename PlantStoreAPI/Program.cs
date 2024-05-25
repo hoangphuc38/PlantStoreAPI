@@ -86,6 +86,7 @@ builder.Services.AddScoped<IWishListRepo, WishListRepo>();
 
 builder.Services.AddSingleton<JWTManger>();
 builder.Services.AddSingleton<UploadImage>();
+builder.Services.AddSingleton<Gmail>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

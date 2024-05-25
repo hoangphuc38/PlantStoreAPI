@@ -75,3 +75,5 @@ D:\DoAn1\PlantStoreAPI\PlantStoreAPI\obj\Debug\net6.0\ref\PlantStoreAPI.dll
 D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\CloudinaryDotNet.dll
 D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\dotenv.net.dll
 D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\DoAn1\PlantStoreAPI\PlantStoreAPI\obj\Debug\net6.0\PlantStoreAPI.Resources.PKres.resources
+D:\DoAn1\PlantStoreAPI\PlantStoreAPI\obj\Debug\net6.0\PlantStoreAPI.csproj.GenerateResource.cache

@@ -51,7 +51,7 @@ namespace PlantStoreAPI.Controllers
             }
         }
 
-        [HttpPut("update-status")]
+        [HttpPut("update-status/{orderID}")]
         public async Task<IActionResult> UpdateStatus(string orderID)
         {
             return Ok(new

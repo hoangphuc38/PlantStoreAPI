@@ -3,7 +3,9 @@ using PlantStoreAPI.Data;
 using PlantStoreAPI.Model;
 using PlantStoreAPI.Repositories;
 using PlantStoreAPI.Response;
+using PlantStoreAPI.StaticServices;
 using PlantStoreAPI.ViewModel;
+using PlantStoreAPI.Resources;
 using System.Text.RegularExpressions;
 
 namespace PlantStoreAPI.Services
@@ -266,20 +268,31 @@ namespace PlantStoreAPI.Services
 
             order.Status = status[index + 1];
 
-            //Thêm chức năng gửi email nếu có
             var user = await _context.Users.FindAsync(order.CustomerID);
 
             if (user != null)
             {
-                switch(order.Status)
+                string content = "", subject = "";
+                switch (order.Status)
                 {
                     case "Packaging":
+                        content = await ConfirmEmailContent(order);
+                        subject = "[PK PLANT STORE] Đơn hàng của bạn đã được xác nhận!";
                         break;
                     case "Delivering":
+                        content = UpdateStatusContent(order);
+                        subject = $"[PK PLANT STORE] Cập nhật thông tin giao hàng cho đơn hàng #{order.OrderID}";
                         break;
                     case "Completed":
+                        content = DeliveredContent(order);
+                        subject = $"[PK PLANT STORE] Đơn hàng #{order.OrderID} đã hoàn thành!";
                         order.IsPaid = true;
                         break;
+                }
+
+                if (content != "")
+                {
+                    Gmail.SendEmail(subject, content, new List<string> { user.Email });
                 }
             }
 
@@ -406,13 +419,91 @@ namespace PlantStoreAPI.Services
 
             return orderResponses;
         }
+        private async Task<string> ConfirmEmailContent(Order order)
+        {
+            var confirmEmail = PKRes.ConfirmEmail;
+
+            var details = await _context.OrderDetails
+                .Where(o => o.OrderID == order.OrderID)
+                .ToListAsync();
+
+            double? subTotal = 0;
+
+            foreach (var detail in details)
+            {
+                var detailContent = PKRes.ProductDetail;
+
+                detail.Product = await _context.Products.FindAsync(detail.ProductID);
+
+                detailContent = detailContent.Replace("{{ProductName}}", detail.Product?.ProductName);
+                detailContent = detailContent.Replace("{{Quantity}}", detail.Quantity.ToString());
+                detailContent = detailContent.Replace("{{ProductPrice}}", detail.Product?.Price.ToString());
+
+                confirmEmail.Insert(confirmEmail.IndexOf("<!-- detail -->"), detailContent + "\n");
+
+                subTotal += detail.Product?.Price;
+            }
+
+            if (order.OrderID != null)
+            {
+                confirmEmail = confirmEmail.Replace("{{CustomerName}}", order.Customer?.Name);
+                confirmEmail = confirmEmail.Replace("{{OrderID}}", order.OrderID.ToString());
+                confirmEmail = confirmEmail.Replace("{{SubTotal}}", subTotal.ToString());
+                confirmEmail = confirmEmail.Replace("{{Shipping}}", order.ShippingCost.ToString());
+            }
+
+            if (order.Voucher != null)
+            {
+                confirmEmail = confirmEmail.Replace("{{Discount}}", order.Voucher.Value.ToString());
+            }
+            else
+            {
+                confirmEmail = confirmEmail.Replace("{{Discount}}", "0");
+            }
+            confirmEmail = confirmEmail.Replace("{{Total}}", order.TotalPrice.ToString());
+            confirmEmail = confirmEmail.Replace("{{TimeCreated}}", order.TimeCreated.ToShortDateString());
+            confirmEmail = confirmEmail.Replace("{{Name}}", order.Name);
+            confirmEmail = confirmEmail.Replace("{{Phone}}", order.Phone);
+            confirmEmail = confirmEmail.Replace("{{Address}}", order.Address);
+
+            return confirmEmail;
+        }
+
+        private string UpdateStatusContent(Order order)
+        {
+            var content = PKRes.UpdateStatus;
+
+            if (order.OrderID != null)
+            {
+                content = content.Replace("{{CustomerName}}", order.Customer?.Name);
+                content = content.Replace("{{OrderID}}", order.OrderID.ToString());
+                content = content.Replace("{{OrderStatus}}", "Đang vận chuyển");
+                content = content.Replace("{{Total}}", order.TotalPrice.ToString());
+            }
+
+            return content;
+        }
+
+        private string DeliveredContent(Order order)
+        {          
+            var content = PKRes.Delivered;
+            if (order.OrderID != null)
+            {
+                content = content.Replace("{{CustomerName}}", order.Customer?.Name);
+                content = content.Replace("{{OrderID}}", order.OrderID.ToString());
+                content = content.Replace("{{OrderStatus}}", "Đã giao hàng");
+                content = content.Replace("{{Total}}", order.TotalPrice.ToString());
+            }
+
+            return content;
+        }
         private async Task<string> AutoID()
         {
             var ID = "HD0001";
 
-            var maxID = await _context.Customers
-                .OrderByDescending(v => v.ID)
-                .Select(v => v.ID)
+            var maxID = await _context.Orders
+                .OrderByDescending(v => v.OrderID)
+                .Select(v => v.OrderID)
                 .FirstOrDefaultAsync();
 
             if (string.IsNullOrEmpty(maxID))
