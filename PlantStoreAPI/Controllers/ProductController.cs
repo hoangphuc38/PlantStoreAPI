@@ -49,5 +49,11 @@ namespace PlantStoreAPI.Controllers
         {
             return Ok(await _repo.SearchByName(name));
         }
+
+        [HttpGet("recommend/{customerID}")]
+        public async Task<IActionResult> RecommendProducts(string customerID)
+        {
+            return Ok(await _repo.RecommendProducts(customerID));
+        }
     }
 }

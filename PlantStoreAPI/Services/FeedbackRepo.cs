@@ -117,7 +117,16 @@ namespace PlantStoreAPI.Services
                     _context.Products.Update(product);
                     await _context.SaveChangesAsync();
                 }
-            }         
+            }
+
+            var pdID = int.Parse(feedback.ProductID.Substring(2));
+            var csID = int.Parse(feedback.CustomerID.Substring(2));
+            var rating = feedback.Point;
+            _context.Database.ExecuteSqlRaw($"IF EXISTS (SELECT * FROM DatasetUserAndFeedback WHERE ProductID = '{pdID}' AND CustomerID = '{csID}') " +
+                $"BEGIN UPDATE DatasetUserAndFeedback SET Rating = {rating} WHERE ProductID = '{pdID}' AND " +
+                $"CustomerID = '{csID}';END " +
+                $"ELSE BEGIN INSERT INTO DatasetUserAndFeedback (CustomerID, ProductID, Rating)" +
+                $"VALUES ('{csID}', '{pdID}', {rating});END");
 
             return feedback;
         }

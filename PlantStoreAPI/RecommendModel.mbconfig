@@ -1,0 +1,259 @@
+﻿{
+  "Scenario": "Recommendation",
+  "DataSource": {
+    "Type": "SQL",
+    "Version": 1,
+    "ColumnProperties": [
+      {
+        "ColumnName": "CustomerID",
+        "ColumnPurpose": "User",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 4
+      },
+      {
+        "ColumnName": "ProductID",
+        "ColumnPurpose": "Item",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 4
+      },
+      {
+        "ColumnName": "Rating",
+        "ColumnPurpose": "Label",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 4
+      }
+    ],
+    "ConnectionString": "Data Source=DESKTOP-9GODJ37\\MSSQLSERVER2019;Initial Catalog=PlantStoreAPI;Integrated Security=True",
+    "CommandString": "SELECT CAST([CustomerID] as REAL), CAST([ProductID] as REAL), CAST([Rating] as REAL) FROM [dbo].[DatasetUserAndFeedback]",
+    "DatabaseName": "PlantStoreAPI",
+    "SelectedTableDbo": "dbo",
+    "TableName": "DatasetUserAndFeedback"
+  },
+  "Environment": {
+    "Type": "LocalCPU",
+    "Version": 1
+  },
+  "RunHistory": {
+    "Version": 3,
+    "Type": "Result",
+    "Trials": [
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "MatrixFactorization",
+        "Score": -0.018990010751126052,
+        "RuntimeInSeconds": 0.348,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4",
+          "e0": {
+            "OutputColumnName": "ProductID",
+            "InputColumnName": "ProductID",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e1": {
+            "OutputColumnName": "CustomerID",
+            "InputColumnName": "CustomerID",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e2": {
+            "LabelColumnName": "Rating",
+            "MatrixColumnIndexColumnName": "CustomerID",
+            "MatrixRowIndexColumnName": "ProductID",
+            "ApproximationRank": 13,
+            "LearningRate": 0.18741076867015147,
+            "NumberOfIterations": 59,
+            "Quiet": true
+          },
+          "e3": {
+            "OutputColumnName": "CustomerID",
+            "InputColumnName": "CustomerID"
+          },
+          "e4": {
+            "OutputColumnName": "ProductID",
+            "InputColumnName": "ProductID"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "MatrixFactorization",
+        "Score": -1.3112237791952577,
+        "RuntimeInSeconds": 0.447,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4",
+          "e0": {
+            "OutputColumnName": "ProductID",
+            "InputColumnName": "ProductID",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e1": {
+            "OutputColumnName": "CustomerID",
+            "InputColumnName": "CustomerID",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e2": {
+            "LabelColumnName": "Rating",
+            "MatrixColumnIndexColumnName": "CustomerID",
+            "MatrixRowIndexColumnName": "ProductID",
+            "ApproximationRank": 15,
+            "LearningRate": 0.18054206375356982,
+            "NumberOfIterations": 138,
+            "Quiet": true
+          },
+          "e3": {
+            "OutputColumnName": "CustomerID",
+            "InputColumnName": "CustomerID"
+          },
+          "e4": {
+            "OutputColumnName": "ProductID",
+            "InputColumnName": "ProductID"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "MatrixFactorization",
+        "Score": -3.1575567034039578,
+        "RuntimeInSeconds": 0.366,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4",
+          "e0": {
+            "OutputColumnName": "ProductID",
+            "InputColumnName": "ProductID",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e1": {
+            "OutputColumnName": "CustomerID",
+            "InputColumnName": "CustomerID",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e2": {
+            "LabelColumnName": "Rating",
+            "MatrixColumnIndexColumnName": "CustomerID",
+            "MatrixRowIndexColumnName": "ProductID",
+            "ApproximationRank": 13,
+            "LearningRate": 0.18775157219997454,
+            "NumberOfIterations": 58,
+            "Quiet": true
+          },
+          "e3": {
+            "OutputColumnName": "CustomerID",
+            "InputColumnName": "CustomerID"
+          },
+          "e4": {
+            "OutputColumnName": "ProductID",
+            "InputColumnName": "ProductID"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "MatrixFactorization",
+        "Score": -15.171040966354276,
+        "RuntimeInSeconds": 0.41,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4",
+          "e0": {
+            "OutputColumnName": "ProductID",
+            "InputColumnName": "ProductID",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e1": {
+            "OutputColumnName": "CustomerID",
+            "InputColumnName": "CustomerID",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e2": {
+            "LabelColumnName": "Rating",
+            "MatrixColumnIndexColumnName": "CustomerID",
+            "MatrixRowIndexColumnName": "ProductID",
+            "ApproximationRank": 12,
+            "LearningRate": 0.18686465129716767,
+            "NumberOfIterations": 58,
+            "Quiet": true
+          },
+          "e3": {
+            "OutputColumnName": "CustomerID",
+            "InputColumnName": "CustomerID"
+          },
+          "e4": {
+            "OutputColumnName": "ProductID",
+            "InputColumnName": "ProductID"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "MatrixFactorization",
+        "Score": -22.32106035243218,
+        "RuntimeInSeconds": 0.366,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4",
+          "e0": {
+            "OutputColumnName": "ProductID",
+            "InputColumnName": "ProductID",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e1": {
+            "OutputColumnName": "CustomerID",
+            "InputColumnName": "CustomerID",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e2": {
+            "LabelColumnName": "Rating",
+            "MatrixColumnIndexColumnName": "CustomerID",
+            "MatrixRowIndexColumnName": "ProductID",
+            "ApproximationRank": 13,
+            "LearningRate": 0.18714453498111622,
+            "NumberOfIterations": 59,
+            "Quiet": true
+          },
+          "e3": {
+            "OutputColumnName": "CustomerID",
+            "InputColumnName": "CustomerID"
+          },
+          "e4": {
+            "OutputColumnName": "ProductID",
+            "InputColumnName": "ProductID"
+          }
+        }
+      }
+    ],
+    "Estimators": {
+      "e0": "MapValueToKey",
+      "e1": "MapValueToKey",
+      "e2": "MatrixFactorization",
+      "e3": "MapKeyToValue",
+      "e4": "MapKeyToValue"
+    },
+    "Schema": "e0 * e1 * e2 * e3 * e4",
+    "MetricName": "RSquared",
+    "ModelFilePath": "D:\\DoAn1\\PlantStoreAPI\\PlantStoreAPI\\RecommendModel.mlnet"
+  },
+  "Type": "TrainingConfig",
+  "Version": 4,
+  "TrainingOption": {
+    "Version": 2,
+    "Subsampling": false,
+    "Type": "RecommendationTrainingOption",
+    "TrainingTime": 90,
+    "LabelColumn": "Rating",
+    "UserIdColumn": "CustomerID",
+    "ItemIdColumn": "ProductID",
+    "ValidationOption": {
+      "Version": 0,
+      "Type": "TrainValidateSplitValidationOption",
+      "SplitRatio": 0.2
+    }
+  }
+}

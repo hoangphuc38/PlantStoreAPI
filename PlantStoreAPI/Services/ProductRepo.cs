@@ -175,7 +175,72 @@ namespace PlantStoreAPI.Services
             
             return products;
         }
+        public async Task<List<RecommendationVM>> RecommendProducts(string customerID)
+        {
+            var result = new List<RecommendationVM>();
+            var allProducts = await _context.Products.ToListAsync();
 
+            var checkBought = await _context.Orders.Where(o => o.CustomerID == customerID).ToListAsync();
+
+            //Recommend when user does not have any order
+            if (checkBought == null || checkBought.Count <= 0)
+            {
+                var favoritePlantsName = await _context.FavouritePlants
+                                                       .Where(c => c.CustomerID == customerID)
+                                                       .ToListAsync();
+
+                foreach (var plant in favoritePlantsName)
+                {
+                    var pds = allProducts.Where(p => p.ProductName?.ToLower() == plant.PlantName?.ToLower()).ToList();
+
+                    foreach (var pd in pds)
+                    {
+                        pd.Images = await _context.ProductImages
+                                                  .Where(c => c.ProductId == pd.ProductID)
+                                                  .ToListAsync();
+                        result.Add(new RecommendationVM(0, pd));
+                    }                  
+                }
+
+                if (result.Count <= 0)
+                {
+                    var rand = new Random();
+                    var maxID = int.Parse(allProducts[allProducts.Count - 1].ProductID.Substring(2));
+                    for (int i = 0; i < 8; i++)
+                    {
+                        var index = rand.Next(1, maxID + 1);
+                        var rec = new RecommendationVM(0, allProducts[index]);
+
+                        if (!result.Contains(rec))
+                        {
+                            result.Add(rec);
+                        }
+                    }
+                }
+            }
+            //Recommend when user have orders and make feedbacks
+            else 
+            {
+                var customer = int.Parse(customerID.Substring(2));
+                RecommendModel.ModelInput inputData;
+                foreach(var product in allProducts)
+                {
+                    product.Images = await _context.ProductImages
+                                                   .Where(c => c.ProductId == product.ProductID)
+                                                   .ToListAsync();
+                    inputData = new RecommendModel.ModelInput
+                    {
+                        CustomerID = customer,
+                        ProductID = int.Parse(product.ProductID.Substring(2)),
+                    };
+                    var predictionResult = RecommendModel.Predict(inputData);
+                    result.Add(new RecommendationVM(predictionResult.Score, product));
+                }
+                result = result.OrderByDescending(x => x.Score).ToList();
+            }
+
+            return result.Take(8).ToList();
+        }
         private async Task<string> AutoID()
         {
             var ID = "PD0001";

@@ -110,7 +110,19 @@ namespace PlantStoreAPI.Services
         {
             await _signInManager.SignOutAsync();
         }
+        public async Task AddFavouritePlants(string customerID, List<string> plants)
+        {
+            foreach (var plant in plants)
+            {
+                _context.FavouritePlants.Add(new FavouritePlant
+                {
+                    CustomerID = customerID,
+                    PlantName = plant,
+                });
+            }
 
+            await _context.SaveChangesAsync();
+        }
         private async Task<string> AutoID()
         {
             var ID = "CS0001";

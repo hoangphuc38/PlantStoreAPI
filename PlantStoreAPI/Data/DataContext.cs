@@ -19,9 +19,10 @@ namespace PlantStoreAPI.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<FavouritePlant> FavouritePlants { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
         public DbSet<VoucherApplied> VoucherApplied { get; set; }
-        public DbSet<WishList> WishLists { get; set; }
+        public DbSet<WishList> WishLists { get; set; }       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +31,7 @@ namespace PlantStoreAPI.Data
             modelBuilder.Entity<Feedback>().HasKey(v => new { v.CustomerID, v.ProductID });
             modelBuilder.Entity<VoucherApplied>().HasKey(v => new { v.VoucherID, v.CustomerID });
             modelBuilder.Entity<WishList>().HasKey(v => new { v.CustomerID, v.ProductID });
+            modelBuilder.Entity<FavouritePlant>().HasKey(v => new { v.CustomerID, v.PlantName });
             base.OnModelCreating(modelBuilder);
         }
     }

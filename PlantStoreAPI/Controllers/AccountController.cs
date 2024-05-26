@@ -68,5 +68,12 @@ namespace PlantStoreAPI.Controllers
                 message = "Success"
             });
         }
+
+        [HttpPost("set-favourite-plants/{customerID}")]
+        public async Task<IActionResult> SetFavouritePlants(string customerID, [FromBody] List<string> plants)
+        {
+            await _repo.AddFavouritePlants(customerID, plants);
+            return Ok();
+        }
     }
 }
