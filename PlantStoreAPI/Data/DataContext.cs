@@ -12,6 +12,8 @@ namespace PlantStoreAPI.Data
 
         }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<ChatRoom> ChatRooms { get; set; }
+        public DbSet<Message> Messages { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<DeliveryInfo> DeliveryInfos { get; set; }

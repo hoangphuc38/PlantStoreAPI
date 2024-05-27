@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PlantStoreAPI.Data;
+using PlantStoreAPI.Hubs;
 using PlantStoreAPI.Model;
 using PlantStoreAPI.Repositories;
 using PlantStoreAPI.Services;
@@ -74,6 +75,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IAccountRepo, AccountRepo>();
 builder.Services.AddScoped<IProductRepo, ProductRepo>();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
+builder.Services.AddScoped<IChatRepo, ChatRepo>();
 builder.Services.AddScoped<IDeliveryInfo, DeliveryInfoRepo>();
 builder.Services.AddScoped<ICartRepo, CartRepo>();
 builder.Services.AddScoped<IOrderRepo, OrderRepo>();
@@ -83,6 +85,17 @@ builder.Services.AddScoped<IStatRepo, StatRepo>();
 builder.Services.AddScoped<IVoucherRepo, VoucherRepo>();
 builder.Services.AddScoped<IWishListRepo, WishListRepo>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.AllowAnyOrigin() // Add your production origins as needed
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
+builder.Services.AddSignalR();
 
 builder.Services.AddSingleton<JWTManger>();
 builder.Services.AddSingleton<UploadImage>();
@@ -134,10 +147,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("CorsPolicy");
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/chathub");
 
 app.Run();

@@ -72,6 +72,12 @@ namespace PlantStoreAPI.Services
 
             await _userManager.AddToRoleAsync(user, role);
 
+            _context.ChatRooms.Add(new ChatRoom
+            {
+                CustomerID = customer.ID,
+                Customer = customer,
+            });
+
             await _context.SaveChangesAsync();
 
             return customer;
