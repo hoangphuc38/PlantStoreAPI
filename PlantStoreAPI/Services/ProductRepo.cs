@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PlantStoreAPI.Data;
 using PlantStoreAPI.Model;
 using PlantStoreAPI.Repositories;
+using PlantStoreAPI.Response;
 using PlantStoreAPI.StaticServices;
 using PlantStoreAPI.ViewModel;
 using System.Text.RegularExpressions;
@@ -280,6 +281,45 @@ namespace PlantStoreAPI.Services
             return await _context.Products.Where(c => c.ProductID == productID)
                                           .Select(c => c.Sold)
                                           .FirstOrDefaultAsync();
+        }
+
+        public async Task<SearchImageResponse> SearchByImage(SearchImageVM image)
+        {
+            if (image.Image != null)
+            {
+                var imageBytes = ConvertIFormFileToByteArray(image.Image);
+                SearchModel.ModelInput inputData = new SearchModel.ModelInput()
+                {
+                    ImageSource = imageBytes,
+                };
+                var result = SearchModel.Predict(inputData);
+
+                return new SearchImageResponse
+                {
+                    PlantName = result.PredictedLabel,
+                    Percentage = result.Score.Max(),
+                };
+            }
+            else
+            {
+                return new SearchImageResponse();
+            }
+
+        }
+        public static byte[] ConvertIFormFileToByteArray(IFormFile file)
+        {
+            if (file != null && file.Length > 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        stream.CopyTo(memoryStream);
+                        return memoryStream.ToArray();
+                    }
+                }
+            }
+            return null;
         }
     }
 }

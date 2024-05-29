@@ -74,6 +74,14 @@
               "target": "Package",
               "version": "[0.21.1, )"
             },
+            "Microsoft.ML.Vision": {
+              "target": "Package",
+              "version": "[3.0.0-preview.23266.6, )"
+            },
+            "SciSharp.TensorFlow.Redist": {
+              "target": "Package",
+              "version": "[2.3.1, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"

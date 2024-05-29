@@ -112,3 +112,15 @@ D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\runtimes\win-x86\native\sn
 D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\RecommendModel.mlnet
+D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\SearchModel.mlnet
+D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\Google.Protobuf.dll
+D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\Microsoft.ML.TensorFlow.dll
+D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\Microsoft.ML.Vision.dll
+D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\NumSharp.Lite.dll
+D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\Protobuf.Text.dll
+D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\TensorFlow.NET.dll
+D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\runtimes\linux-x64\native\libtensorflow.so
+D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\runtimes\linux-x64\native\libtensorflow_framework.so.2
+D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\runtimes\osx-x64\native\libtensorflow.dylib
+D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\runtimes\osx-x64\native\libtensorflow_framework.2.dylib
+D:\DoAn1\PlantStoreAPI\PlantStoreAPI\bin\Debug\net6.0\runtimes\win-x64\native\tensorflow.dll

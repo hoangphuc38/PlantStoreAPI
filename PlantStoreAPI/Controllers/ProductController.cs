@@ -55,5 +55,11 @@ namespace PlantStoreAPI.Controllers
         {
             return Ok(await _repo.RecommendProducts(customerID));
         }
+
+        [HttpPost("predict-by-image")]
+        public async Task<IActionResult> SearchByImage([FromForm] SearchImageVM image)
+        {
+            return Ok(await _repo.SearchByImage(image));
+        }
     }
 }

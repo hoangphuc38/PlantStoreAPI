@@ -7,7 +7,6 @@ namespace PlantStoreAPI.Repositories
     {
         Task<List<Message>> GetMessageOfRoom(string customerID);
         Task<Message> AddMessage(MessageVM message);
-        //Task<List<string>> GetAdminsId();
         Task<List<ChatRoom>> GetRooms();
     }
 }

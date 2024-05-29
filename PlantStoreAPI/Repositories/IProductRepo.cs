@@ -1,4 +1,5 @@
 ﻿using PlantStoreAPI.Model;
+using PlantStoreAPI.Response;
 using PlantStoreAPI.ViewModel;
 
 namespace PlantStoreAPI.Repositories
@@ -12,6 +13,6 @@ namespace PlantStoreAPI.Repositories
         Task<Product> Delete(string productID);
         Task<List<Product>> SearchByName(string name);
         Task<List<RecommendationVM>> RecommendProducts(string customerID);
-        
+        Task<SearchImageResponse> SearchByImage(SearchImageVM image);
     }
 }
