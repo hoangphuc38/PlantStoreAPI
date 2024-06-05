@@ -54,6 +54,20 @@ namespace PlantStoreAPI.Services
 
             return productList;
         }
+        public async Task<Product> GetDetail(string productID)
+        {
+            var product = await _context.Products.FindAsync(productID);
+
+            if (product != null)
+            {
+                product.Images = await _context.ProductImages.Where(c => c.ProductId == productID).ToListAsync();
+                return product;
+            }
+            else
+            {
+                return new Product();
+            }
+        }
         public async Task<Product> Add(ProductVM productVM)
         {
             string autoID = await AutoID();

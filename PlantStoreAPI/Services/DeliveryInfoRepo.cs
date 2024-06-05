@@ -25,6 +25,17 @@ namespace PlantStoreAPI.Services
 
             return deliveryList;
         }
+        public async Task<DeliveryInfo> GetDetail(int deliveryID)
+        {
+            var delivery = await _context.DeliveryInfos.FindAsync(deliveryID);
+
+            if (delivery == null)
+            {
+                throw new Exception("Not found");
+            }
+
+            return delivery;
+        }
         public async Task<DeliveryInfo> Add(DeliveryInfoVM deliveryInfoVM)
         {
             var deliveryInfo = new DeliveryInfo

@@ -6,6 +6,7 @@ namespace PlantStoreAPI.Repositories
     public interface IVoucherRepo
     {
         Task<List<Voucher>> GetAll();
+        Task<List<Voucher>> GetAllOfCustomer(string customerID);
         Task<Voucher> GetById(string voucherID);
         Task<Voucher> Add(VoucherVM voucher);
         Task<Voucher> Delete(string voucherId);

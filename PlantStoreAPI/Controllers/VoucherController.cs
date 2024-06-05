@@ -20,6 +20,12 @@ namespace PlantStoreAPI.Controllers
             return Ok(await _repo.GetAll());    
         }
 
+        [HttpGet("get-all/{customerID}")]
+        public async Task<IActionResult> GetAllOfCustomer(string customerID)
+        {
+            return Ok(await _repo.GetAllOfCustomer(customerID));
+        }
+
         [HttpGet("get-detail/{voucherID}")]
         public async Task<IActionResult> GetById(string voucherID)
         {

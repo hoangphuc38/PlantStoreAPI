@@ -23,6 +23,13 @@ namespace PlantStoreAPI.Services
             foreach (var cart in carts)
             {
                 cart.Product = await _context.Products.FindAsync(cart.ProductID);
+
+                if (cart.Product != null)
+                {
+                    cart.Product.Images = await _context.ProductImages
+                                                    .Where(c => c.ProductId == cart.ProductID)
+                                                    .ToListAsync();
+                }              
             }
 
             return carts;

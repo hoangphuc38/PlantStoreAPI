@@ -51,6 +51,7 @@ namespace PlantStoreAPI.Services
                     OrderID = order.OrderID,
                     TotalPrice = order.TotalPrice,
                     Status = order.Status,
+                    TimeOrder = order.TimeCreated,
                 };
 
                 var orderDetail = await _context.OrderDetails
@@ -113,6 +114,7 @@ namespace PlantStoreAPI.Services
                     OrderID = order.OrderID,
                     TotalPrice = order.TotalPrice,
                     Status = order.Status,
+                    TimeOrder = order.TimeCreated,
                 };
 
                 var orderDetail = await _context.OrderDetails
@@ -393,6 +395,7 @@ namespace PlantStoreAPI.Services
                     OrderID = order.OrderID,
                     TotalPrice = order.TotalPrice,
                     Status = order.Status,
+                    TimeOrder = order.TimeCreated,
                 };
 
                 var orderDetail = await _context.OrderDetails

@@ -108,7 +108,7 @@ builder.Services.AddSwaggerGen(opts =>
 {
     opts.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Retro Football API",
+        Title = "Plant Store API",
         Version = "v1"
     });
     opts.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

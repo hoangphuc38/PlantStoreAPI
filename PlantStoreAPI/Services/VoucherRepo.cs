@@ -19,6 +19,25 @@ namespace PlantStoreAPI.Services
         {
             return await _context.Vouchers.ToListAsync();
         }
+        public async Task<List<Voucher>> GetAllOfCustomer(string customerID)
+        {
+            List<Voucher> listVoucher = new List<Voucher>();
+
+            var voucherApplied = await _context.VoucherApplied
+                                               .Where(c => c.CustomerID == customerID)
+                                               .ToListAsync();
+            foreach(var voucher in voucherApplied)
+            {
+                var detailVoucher = await _context.Vouchers.FindAsync(voucher.VoucherID);
+
+                if (detailVoucher != null && detailVoucher.DateEnd > DateTime.Now)
+                {
+                    listVoucher.Add(detailVoucher);
+                }
+            }
+
+            return listVoucher;
+        }
         public async Task<Voucher> GetById(string voucherID)
         {
             var voucher = await _context.Vouchers.FindAsync(voucherID);

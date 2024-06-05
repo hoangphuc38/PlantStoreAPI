@@ -14,10 +14,16 @@ namespace PlantStoreAPI.Controllers
             _repo = repo;
         }
 
-        [HttpGet("get-all")]
+        [HttpGet("get-all/{customerID}")]
         public async Task<IActionResult> GetAll(string customerID)
         {
             return Ok(await _repo.GetAll(customerID));
+        }
+
+        [HttpGet("get-detail/{deliveryID}")]
+        public async Task<IActionResult> GetDetail(int deliveryID)
+        {
+            return Ok(await _repo.GetDetail(deliveryID));
         }
 
         [HttpPost("new-address")]
@@ -26,7 +32,7 @@ namespace PlantStoreAPI.Controllers
             return Ok(await _repo.Add(deliveryInfo));
         }       
 
-        [HttpPut("update-delivery-info")]
+        [HttpPut("update-delivery-info/{deliveryID}")]
         public async Task<IActionResult> Update(int deliveryID, DeliveryInfoVM deliveryInfo)
         {
             return Ok(await _repo.Update(deliveryID, deliveryInfo));

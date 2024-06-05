@@ -26,6 +26,12 @@ namespace PlantStoreAPI.Controllers
             return Ok(await _repo.GetByCategory(categoryName));
         }
 
+        [HttpGet("detail/{productID}")]
+        public async Task<IActionResult> GetDetail(string productID)
+        {
+            return Ok(await _repo.GetDetail(productID));
+        }
+
         [HttpPost("add-product")]
         public async Task<IActionResult> Add([FromForm] ProductVM product)
         {
