@@ -60,7 +60,10 @@ namespace PlantStoreAPI.Services
         }
         public async Task<Cart> AddToCart(CartVM cartVM)
         {
-            var ifExistCart = await _context.Carts.FindAsync(cartVM.ProductID, cartVM.CustomerID);
+            var ifExistCart = await _context.Carts
+                                            .Where(c => c.ProductID == cartVM.ProductID
+                                                   && c.CustomerID == cartVM.CustomerID)
+                                            .FirstOrDefaultAsync();
 
             if (ifExistCart != null)
             {
