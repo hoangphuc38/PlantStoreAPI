@@ -31,8 +31,8 @@ namespace PlantStoreAPI.Services
                          "Completed";
 
             var orders = status == "All"
-                ? await _context.Orders.ToListAsync()
-                : await _context.Orders.Where(c => c.Status == status).ToListAsync();
+                ? await _context.Orders.OrderByDescending(x => x.TimeCreated).ToListAsync()
+                : await _context.Orders.Where(c => c.Status == status).OrderByDescending(x => x.TimeCreated).ToListAsync();
 
             if (month > 0 && month <= 12)
             {
@@ -386,7 +386,9 @@ namespace PlantStoreAPI.Services
         {
             List<OrderResponse> orderResponses = new List<OrderResponse>();
 
-            var orders = await _context.Orders.Where(c => c.OrderID.Contains(orderID)).ToListAsync();
+            var orders = await _context.Orders.Where(c => c.OrderID.Contains(orderID))
+                                              .OrderByDescending(x => x.TimeCreated)                              
+                                              .ToListAsync();
 
             foreach (var order in orders)
             {

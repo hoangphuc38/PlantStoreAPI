@@ -54,6 +54,27 @@ namespace PlantStoreAPI.Services
 
             return productList;
         }
+        public async Task<List<Product>> GetBestSeller()
+        {
+            var productList = await _context.Products.OrderByDescending(c => c.Sold).Take(5).ToListAsync();
+
+            if (productList == null)
+            {
+                return new List<Product>();
+            }
+
+            foreach (var product in productList)
+            {
+                product.Images = new List<ProductImage>();
+                var productImage = await _context.ProductImages
+                                        .Where(c => c.ProductId == product.ProductID)
+                                        .ToListAsync();
+
+                product.Images.AddRange(productImage);
+            }
+
+            return productList;
+        }
         public async Task<Product> GetDetail(string productID)
         {
             var product = await _context.Products.FindAsync(productID);
@@ -254,7 +275,7 @@ namespace PlantStoreAPI.Services
                 result = result.OrderByDescending(x => x.Score).ToList();
             }
 
-            return result.Take(8).ToList();
+            return result.Take(4).ToList();
         }
         private async Task<string> AutoID()
         {

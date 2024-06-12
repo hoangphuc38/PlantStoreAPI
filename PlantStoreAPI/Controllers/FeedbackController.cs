@@ -33,13 +33,13 @@ namespace PlantStoreAPI.Controllers
         }
 
         [HttpPost("new-feedback")]
-        public async Task<IActionResult> Add([FromForm] FeedbackVM feedback)
+        public async Task<IActionResult> Add(FeedbackVM feedback)
         {
             return Ok(await _repo.Add(feedback));
         }
 
         [HttpPut("update-feedback")]
-        public async Task<IActionResult> Update([FromForm] FeedbackVM feedback)
+        public async Task<IActionResult> Update(FeedbackVM feedback)
         {
             return Ok(await _repo.Update(feedback));
         }

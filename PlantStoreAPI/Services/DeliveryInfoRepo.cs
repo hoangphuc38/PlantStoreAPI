@@ -36,6 +36,20 @@ namespace PlantStoreAPI.Services
 
             return delivery;
         }
+        public async Task<DeliveryInfo> GetDefaultAddress(string customerID)
+        {
+            var delivery = await _context.DeliveryInfos
+                                         .Where(c => c.CustomerID == customerID
+                                                && c.IsDefault == true)
+                                         .FirstOrDefaultAsync();
+
+            if (delivery == null)
+            {
+                throw new Exception("Not found");
+            }
+
+            return delivery;
+        }
         public async Task<DeliveryInfo> Add(DeliveryInfoVM deliveryInfoVM)
         {
             var deliveryInfo = new DeliveryInfo

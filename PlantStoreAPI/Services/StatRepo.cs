@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PlantStoreAPI.Data;
+using PlantStoreAPI.Model;
 using PlantStoreAPI.Repositories;
 using PlantStoreAPI.Response;
 using PlantStoreAPI.ViewModel;
@@ -50,8 +51,18 @@ namespace PlantStoreAPI.Services
         }
         public async Task<double> GetTopDealToday()
         {
+            List<Order> orderList = new List<Order>();
+            orderList = await _context.Orders.Where(c => c.TimeCreated.Date == DateTime.Now.Date)
+                                             .ToListAsync();
+
+            if (orderList.Count == 0)
+            {
+                return (double) 0;
+            }
+            
             var topDealValue = await _context.Orders.Where(c => c.TimeCreated.Date == DateTime.Now.Date)
                                             .MaxAsync(c => c.TotalPrice);
+
             return topDealValue;
         }
         public async Task<List<StatVM>> RevenueByMonthsOfYear()

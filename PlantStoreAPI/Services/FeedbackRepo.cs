@@ -77,12 +77,8 @@ namespace PlantStoreAPI.Services
                 Comment = feedbackVM.Comment,
                 Point = feedbackVM.Point,
                 FeedbackTime = DateTime.Now,
+                ImageFeedback = "",
             };
-
-            if (feedbackVM.ImageFeedback != null)
-            {
-                feedback.ImageFeedback = await UploadImage.Instance.UploadAsync(feedbackVM.ImageFeedback);
-            }
 
             var product = await _context.Products.FindAsync(feedbackVM.ProductID);
             var customer = await _context.Customers.FindAsync(feedbackVM.CustomerID);
@@ -148,11 +144,6 @@ namespace PlantStoreAPI.Services
 
             feedback.Comment = feedbackVM.Comment;
             feedback.Point = feedbackVM.Point;
-
-            if (feedbackVM.ImageFeedback != null)
-            {
-                feedback.ImageFeedback = await UploadImage.Instance.UploadAsync(feedbackVM.ImageFeedback);
-            }
             
             _context.Feedbacks.Update(feedback);
             await _context.SaveChangesAsync();

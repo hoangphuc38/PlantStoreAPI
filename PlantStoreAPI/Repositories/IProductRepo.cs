@@ -8,6 +8,7 @@ namespace PlantStoreAPI.Repositories
     {
         Task<List<Product>> GetAll();
         Task<List<Product>> GetByCategory(string categoryName);
+        Task<List<Product>> GetBestSeller();
         Task<Product> GetDetail(string productID);
         Task<Product> Add(ProductVM productVM);
         Task<Product> Update(string productID, ProductVM productVM);

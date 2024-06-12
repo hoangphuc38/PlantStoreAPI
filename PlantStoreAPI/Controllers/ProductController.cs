@@ -26,6 +26,12 @@ namespace PlantStoreAPI.Controllers
             return Ok(await _repo.GetByCategory(categoryName));
         }
 
+        [HttpGet("get-best-seller")]
+        public async Task<IActionResult> GetBestSeller()
+        {
+            return Ok(await _repo.GetBestSeller());
+        }
+
         [HttpGet("detail/{productID}")]
         public async Task<IActionResult> GetDetail(string productID)
         {

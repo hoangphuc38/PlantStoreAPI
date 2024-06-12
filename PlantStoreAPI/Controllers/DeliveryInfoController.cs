@@ -26,6 +26,12 @@ namespace PlantStoreAPI.Controllers
             return Ok(await _repo.GetDetail(deliveryID));
         }
 
+        [HttpGet("get-default-address/{customerID}")]
+        public async Task<IActionResult> GetDefaultAddress(string customerID)
+        {
+            return Ok(await _repo.GetDefaultAddress(customerID));
+        }
+
         [HttpPost("new-address")]
         public async Task<IActionResult> Add(DeliveryInfoVM deliveryInfo)
         {
