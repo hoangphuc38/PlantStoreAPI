@@ -10,7 +10,7 @@ namespace PlantStoreAPI.Model
         [MaxLength(20), Required]
         public int RoomID { get; set; }
 
-        [MaxLength(1000), Required]
+        [MaxLength(1000)]
         public string? Content { get; set; }
         public string? Image { get; set; }
 
@@ -19,6 +19,6 @@ namespace PlantStoreAPI.Model
 
         [Required]
         public bool IsCustomerSend { get; set; }
-        public ChatRoom Room { get; set; } = new ChatRoom();
+        public ChatRoom Room { get; set; }
     }
 }

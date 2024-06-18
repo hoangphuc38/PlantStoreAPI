@@ -35,14 +35,14 @@ namespace PlantStoreAPI.Controllers
         {
             var mess = await _repo.AddMessage(message);
 
-            if (!message.IsCustomerSend)
-            {
-                await _hub.Clients.All.SendAsync("ReceiveMessageAdmin", message);
-            }
-            else
-            {
-                await _hub.Clients.All.SendAsync("ReceiveMessageCustomer", message);
-            }
+            //if (!message.IsCustomerSend)
+            //{
+            //    await _hub.Clients.All.SendAsync("ReceiveMessageAdmin", message);
+            //}
+            //else
+            //{
+            //    await _hub.Clients.All.SendAsync("ReceiveMessageCustomer", message);
+            //}
 
             return Ok(mess);
         }

@@ -58,6 +58,11 @@ namespace PlantStoreAPI.Services
                 if (product != null)
                 {
                     feedback.Product = product;
+
+                    var imageList = await _context.ProductImages
+                                                  .Where(c => c.ProductId == product.ProductID)
+                                                  .ToListAsync();
+                    feedback.Product.Images = imageList;
                 }
 
                 if (customer != null)

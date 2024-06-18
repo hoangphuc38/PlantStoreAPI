@@ -80,6 +80,23 @@ namespace PlantStoreAPI.Services
 
             await _context.SaveChangesAsync();
 
+            var vouchers = await _context.Vouchers.ToListAsync();
+
+            foreach (var voucher in vouchers)
+            {
+                var detailVoucher = await _context.Vouchers.FindAsync(voucher.ID);
+
+                if (detailVoucher != null && detailVoucher.DateEnd > DateTime.Now)
+                {
+                    _context.VoucherApplied.Add(new VoucherApplied
+                    {
+                        VoucherID = voucher.ID,
+                        CustomerID = customer.ID,
+                    });
+                }
+            }
+
+            await _context.SaveChangesAsync();
             return customer;
         }
 

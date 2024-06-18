@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using PlantStoreAPI.Data;
+using PlantStoreAPI.Hubs;
 using PlantStoreAPI.Model;
 using PlantStoreAPI.Repositories;
 using PlantStoreAPI.StaticServices;
@@ -10,9 +12,11 @@ namespace PlantStoreAPI.Services
     public class ChatRepo : IChatRepo
     {
         public DataContext _context;
-        public ChatRepo(DataContext context)
+        private readonly IHubContext<ChatHub> _hub;
+        public ChatRepo(DataContext context, IHubContext<ChatHub> hub)
         {
             _context = context;
+            _hub = hub;
         }
         public async Task<List<Message>> GetMessageOfRoom(string customerID)
         {
@@ -20,7 +24,7 @@ namespace PlantStoreAPI.Services
 
             if (room != null)
             {
-                return await _context.Messages
+                return await _context.Messages.OrderByDescending(m => m.SendTime)
                                  .Where(m => m.RoomID == room.RoomID)
                                  .ToListAsync();
             }
@@ -59,6 +63,17 @@ namespace PlantStoreAPI.Services
           
             _context.Messages.Add(newMessage);
             await _context.SaveChangesAsync();
+
+            Console.WriteLine(newMessage);
+
+            if (!message.IsCustomerSend)
+            {
+                await _hub.Clients.All.SendAsync("ReceiveMessageAdmin", newMessage);
+            }
+            else
+            {
+                await _hub.Clients.All.SendAsync("ReceiveMessageCustomer", newMessage);
+            }
 
             return newMessage;
         }
