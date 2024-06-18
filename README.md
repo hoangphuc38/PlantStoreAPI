@@ -9,45 +9,33 @@ The backend will be developed using C# .NET and will expose a RESTful API. It wi
   1. Clone the respository:
 
      ```
-    
      git clone https://github.com/hoangphuc38/PlantStoreAPI.git
-     
      ```
   2. Navigate to the project repository:
 
      ```
-    
      cd PlantStoreAPI
-     
      ```
   3. Install the required dependencies:
 
      ```
-    
      dotnet restore
-     
      ```
   4. Apply database migrations:
 
      ```
-    
      dotnet ef database update
-     
      ```
   5. Build the project:
 
      ```
-    
      dotnet build
-     
      ```
     
   6. Run the application:
 
      ```
-    
      dotnet run
-     
      ``` 
 
 **Additional Information**
