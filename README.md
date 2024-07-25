@@ -1,5 +1,10 @@
 # Plant Store API
 
+**Introduction**
+
+- The project for Project 1 (Course CE201 | UIT)
+- Guided by Msc. Trần Thị Hồng Yến
+
 **Description** 
 
 The backend will be developed using C# .NET and will expose a RESTful API. It will handle data management, including a database mainly for products, users, and orders. The backend will integrate Machine Learning Model built by ML.NET Model Builder, such as a recommendation system for customer support and image-based product search. It will encapsulate the core business logic, security, and authentication. The architecture will be designed for scalability and performance, with comprehensive error handling and logging mechanisms. By leveraging the .NET platform, the backend will provide a robust, secure, and seamless foundation for the application.
