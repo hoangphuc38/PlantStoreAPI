@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlantStoreAPI.Model
 {
@@ -16,5 +17,10 @@ namespace PlantStoreAPI.Model
         public string? Address { get; set; }
         public DateTime DateBirth { get; set; }
         public string? Avatar { get; set; }
+        public double TotalPaid { get; set; }
+        public int CustomerTypeId { get; set; }
+
+        [NotMapped]
+        public CustomerType? CustomerType { get; set; }
     }
 }

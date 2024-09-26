@@ -33,15 +33,15 @@ namespace PlantStoreAPI.Controllers
         }
 
         [HttpPost("new-voucher")]
-        public async Task<IActionResult> Add(VoucherVM voucher)
+        public async Task<IActionResult> Add(VoucherVM voucher, int voucherTypeID)
         {
-            return Ok(await _repo.Add(voucher));
+            return Ok(await _repo.Add(voucher, voucherTypeID));
         }
 
         [HttpPut("update-voucher/{voucherID}")]
-        public async Task<IActionResult> Update(string voucherID, VoucherVM voucher)
+        public async Task<IActionResult> Update(string voucherID, VoucherVM voucher, int voucherTypeID)
         {
-            return Ok(await _repo.Update(voucherID, voucher));
+            return Ok(await _repo.Update(voucherID, voucher, voucherTypeID));
         }
 
         [HttpDelete("delete-voucher/{voucherID}")]

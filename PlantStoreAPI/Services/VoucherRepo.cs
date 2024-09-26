@@ -17,7 +17,19 @@ namespace PlantStoreAPI.Services
         }
         public async Task<List<Voucher>> GetAll()
         {
-            return await _context.Vouchers.ToListAsync();
+            var vouchers = await _context.Vouchers.ToListAsync();
+
+            foreach (var voucher in vouchers)
+            {
+                var voucherType = await _context.VoucherTypes.FindAsync(voucher.VoucherTypeId);
+
+                if (voucherType != null)
+                {
+                    voucher.VoucherType = voucherType;
+                }
+            }
+
+            return vouchers;
         }
         public async Task<List<Voucher>> GetAllOfCustomer(string customerID)
         {
@@ -40,16 +52,25 @@ namespace PlantStoreAPI.Services
         }
         public async Task<Voucher> GetById(string voucherID)
         {
-            var voucher = await _context.Vouchers.FindAsync(voucherID);
+            var voucher = await _context.Vouchers.Where(c => c.ID == voucherID).FirstAsync();
 
             if (voucher == null)
             {
                 throw new KeyNotFoundException();
             }
 
+            var voucherType = await _context.VoucherTypes.FindAsync(voucher.VoucherTypeId);
+
+            if (voucherType == null)
+            {
+                throw new Exception("Cannot find type of voucher");
+            }
+
+            voucher.VoucherType = voucherType;
+
             return voucher;
         }
-        public async Task<Voucher> Add(VoucherVM voucherVM)
+        public async Task<Voucher> Add(VoucherVM voucherVM, int voucherTypeID)
         {
             var voucher = new Voucher
             {
@@ -58,17 +79,32 @@ namespace PlantStoreAPI.Services
                 DateBegin = voucherVM.DateBegin,
                 DateEnd = voucherVM.DateEnd,
                 Value = voucherVM.Value,
+                VoucherTypeId = voucherTypeID
             };
+
+            var voucherType = await _context.VoucherTypes.FindAsync(voucherTypeID);
+
+            if (voucherType == null)
+            {
+                throw new Exception("Cannot find this type of voucher");             
+            }
+            else
+            {
+                voucher.VoucherType = voucherType;
+            }
 
             var customers = await _context.Customers.ToListAsync();
 
             foreach (var customer in customers)
             {
-                _context.VoucherApplied.Add(new VoucherApplied
+                if (await SpecifyTypes(voucherType.VoucherTypeName, customer.CustomerTypeId))
                 {
-                    VoucherID = voucher.ID,
-                    CustomerID = customer.ID,
-                });
+                    _context.VoucherApplied.Add(new VoucherApplied
+                    {
+                        VoucherID = voucher.ID,
+                        CustomerID = customer.ID,
+                    });
+                }   
             }
 
             _context.Vouchers.Add(voucher);
@@ -93,7 +129,7 @@ namespace PlantStoreAPI.Services
             await _context.SaveChangesAsync();
             return voucher;
         }
-        public async Task<Voucher> Update(string voucherID, VoucherVM voucherVM)
+        public async Task<Voucher> Update(string voucherID, VoucherVM voucherVM, int voucherTypeID)
         {
             var voucher = await _context.Vouchers.FindAsync(voucherID);
 
@@ -106,6 +142,16 @@ namespace PlantStoreAPI.Services
             voucher.DateBegin = voucherVM.DateBegin;
             voucher.DateEnd = voucherVM.DateEnd;
             voucher.Value = voucherVM.Value;
+            voucher.VoucherTypeId = voucherTypeID;
+
+            var voucherType = await _context.VoucherTypes.FindAsync(voucherTypeID);
+
+            if (voucherType == null)
+            {
+                throw new Exception("Cannot find this type of voucher");
+            }
+            
+            voucher.VoucherType = voucherType;
 
             _context.Vouchers.Update(voucher);
             await _context.SaveChangesAsync();
@@ -113,8 +159,41 @@ namespace PlantStoreAPI.Services
         }
         public async Task<List<Voucher>> SearchByName(string name)
         {
-            return await _context.Vouchers.Where(c => c.Name.ToLower().Contains(name.ToLower()))
-                                                  .ToListAsync();           
+            var vouchers = await _context.Vouchers.Where(c => c.Name.ToLower().Contains(name.ToLower()))
+                                                  .ToListAsync();
+            foreach (var voucher in vouchers)
+            {
+                var voucherType = await _context.VoucherTypes.FindAsync(voucher.VoucherTypeId);
+
+                if (voucherType == null)
+                {
+                    voucher.VoucherType = null;
+                }
+                else
+                {
+                    voucher.VoucherType = voucherType;
+                }
+            }
+
+            return vouchers;  
+        }
+        public async Task<bool> SpecifyTypes(string voucherType, int customerTypeID)
+        {
+            var customerType = await _context.CustomersTypes.FindAsync(customerTypeID);
+
+            if (customerType == null)
+            {
+                throw new Exception("Not exist user");
+            }
+
+            switch (voucherType)
+            {
+                case "All":
+                    return true;
+                default:
+                    if (customerType.CustomerTypeName == voucherType) return true;
+                    else return false;
+            }
         }
         private async Task<string> AutoID()
         {

@@ -8,9 +8,9 @@ namespace PlantStoreAPI.Repositories
         Task<List<Voucher>> GetAll();
         Task<List<Voucher>> GetAllOfCustomer(string customerID);
         Task<Voucher> GetById(string voucherID);
-        Task<Voucher> Add(VoucherVM voucher);
+        Task<Voucher> Add(VoucherVM voucher, int voucherTypeID);
         Task<Voucher> Delete(string voucherId);
-        Task<Voucher> Update(string voucherId, VoucherVM voucher);
+        Task<Voucher> Update(string voucherId, VoucherVM voucher, int voucherTypeID);
         Task<List<Voucher>> SearchByName(string name);
     }
 }

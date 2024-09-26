@@ -253,6 +253,12 @@ namespace PlantStoreAPI.Services
             }
 
             var customer = await _context.Customers.FindAsync(order.CustomerID);
+
+            if (customer == null)
+            {
+                throw new Exception("Customer does not exist");
+            }
+
             order.Customer = customer;
 
             var voucher = await _context.Vouchers.FindAsync(order.VoucherID);
@@ -289,6 +295,8 @@ namespace PlantStoreAPI.Services
                         content = DeliveredContent(order);
                         subject = $"[PK PLANT STORE] Đơn hàng #{order.OrderID} đã hoàn thành!";
                         order.IsPaid = true;
+                        customer.TotalPaid += order.TotalPrice;
+                        customer.CustomerTypeId = await getRecentLevelCustomer(customer.TotalPaid, customer.CustomerTypeId);
                         break;
                 }
 
@@ -298,6 +306,7 @@ namespace PlantStoreAPI.Services
                 }
             }
 
+            _context.Customers.Update(customer);
             _context.Orders.Update(order);
             await _context.SaveChangesAsync();
 
@@ -501,6 +510,23 @@ namespace PlantStoreAPI.Services
             }
 
             return content;
+        }
+        private async Task<int> getRecentLevelCustomer(double totalPaid, int recentType)
+        {
+            var rangeList = await _context.CustomersTypes.OrderBy(c => c.MaxPaid)
+                                                     .ToListAsync();   
+            
+            foreach (var item in rangeList)
+            {
+                if (totalPaid < item.MaxPaid && item.CustomerTypeName != null)
+                {
+                    if (item.CustomerTypeId != recentType)
+                    {
+                        return item.CustomerTypeId;
+                    }
+                }
+            }
+            return recentType;
         }
         private async Task<string> AutoID()
         {

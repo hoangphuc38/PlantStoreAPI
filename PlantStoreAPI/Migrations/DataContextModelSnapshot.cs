@@ -273,6 +273,9 @@ namespace PlantStoreAPI.Migrations
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CustomerTypeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DateBirth")
                         .HasColumnType("datetime2");
 
@@ -289,9 +292,32 @@ namespace PlantStoreAPI.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<double>("TotalPaid")
+                        .HasColumnType("float");
+
                     b.HasKey("ID");
 
                     b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("PlantStoreAPI.Model.CustomerType", b =>
+                {
+                    b.Property<int>("CustomerTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerTypeId"), 1L, 1);
+
+                    b.Property<string>("CustomerTypeName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<double>("MaxPaid")
+                        .HasColumnType("float");
+
+                    b.HasKey("CustomerTypeId");
+
+                    b.ToTable("CustomersTypes");
                 });
 
             modelBuilder.Entity("PlantStoreAPI.Model.DeliveryInfo", b =>
@@ -483,6 +509,64 @@ namespace PlantStoreAPI.Migrations
                     b.ToTable("OrderDetails");
                 });
 
+            modelBuilder.Entity("PlantStoreAPI.Model.PaymentMethod", b =>
+                {
+                    b.Property<int>("PaymentMethodId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentMethodId"), 1L, 1);
+
+                    b.Property<bool?>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PaymentCartType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentProvider")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int?>("PaymentStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PaymentTransactionNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PaymentTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PaymentMethodId");
+
+                    b.HasIndex("PaymentTypeId");
+
+                    b.ToTable("PaymentMethod");
+                });
+
+            modelBuilder.Entity("PlantStoreAPI.Model.PaymentType", b =>
+                {
+                    b.Property<int>("PaymentTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentTypeId"), 1L, 1);
+
+                    b.Property<string>("PaymentTypeValue")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("PaymentTypeId");
+
+                    b.ToTable("PaymentType");
+                });
+
             modelBuilder.Entity("PlantStoreAPI.Model.Product", b =>
                 {
                     b.Property<string>("ProductID")
@@ -554,6 +638,9 @@ namespace PlantStoreAPI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("VoucherTypeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DateBegin")
                         .HasColumnType("datetime2");
 
@@ -568,7 +655,7 @@ namespace PlantStoreAPI.Migrations
                     b.Property<double>("Value")
                         .HasColumnType("float");
 
-                    b.HasKey("ID");
+                    b.HasKey("ID", "VoucherTypeId");
 
                     b.ToTable("Vouchers");
                 });
@@ -586,6 +673,23 @@ namespace PlantStoreAPI.Migrations
                     b.HasKey("VoucherID", "CustomerID");
 
                     b.ToTable("VoucherApplied");
+                });
+
+            modelBuilder.Entity("PlantStoreAPI.Model.VoucherType", b =>
+                {
+                    b.Property<int>("VoucherTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VoucherTypeId"), 1L, 1);
+
+                    b.Property<string>("VoucherTypeName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("VoucherTypeId");
+
+                    b.ToTable("VoucherTypes");
                 });
 
             modelBuilder.Entity("PlantStoreAPI.Model.WishList", b =>
@@ -728,6 +832,17 @@ namespace PlantStoreAPI.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("PlantStoreAPI.Model.PaymentMethod", b =>
+                {
+                    b.HasOne("PlantStoreAPI.Model.PaymentType", "PaymentType")
+                        .WithMany("PaymentMethods")
+                        .HasForeignKey("PaymentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PaymentType");
+                });
+
             modelBuilder.Entity("PlantStoreAPI.Model.WishList", b =>
                 {
                     b.HasOne("PlantStoreAPI.Model.Product", "Product")
@@ -737,6 +852,11 @@ namespace PlantStoreAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("PlantStoreAPI.Model.PaymentType", b =>
+                {
+                    b.Navigation("PaymentMethods");
                 });
 #pragma warning restore 612, 618
         }

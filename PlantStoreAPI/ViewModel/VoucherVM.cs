@@ -1,4 +1,6 @@
-﻿namespace PlantStoreAPI.ViewModel
+﻿using PlantStoreAPI.Model;
+
+namespace PlantStoreAPI.ViewModel
 {
     public class VoucherVM
     {

@@ -21,6 +21,15 @@ namespace PlantStoreAPI.Services
                 throw new KeyNotFoundException(customerId);
             }
 
+            var customerType = await _context.CustomersTypes.FindAsync(customer.CustomerTypeId);
+
+            if (customerType == null)
+            {
+                throw new Exception("Not found type of customer");
+            }
+
+            customer.CustomerType = customerType;
+
             return customer;
         }
         public async Task<Customer> UpdateInfo(string customerId, CustomerVM customerVM)

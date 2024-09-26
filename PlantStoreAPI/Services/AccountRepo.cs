@@ -57,8 +57,18 @@ namespace PlantStoreAPI.Services
                 Phone = user.PhoneNumber,
                 Address = "",
                 DateBirth = DateTime.Now,
-                Avatar = "https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg"
+                Avatar = "https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg",
+                TotalPaid = 0,
             };
+
+            var customerType = await _context.CustomersTypes
+                                             .Where(c => c.CustomerTypeName == "Normal").FirstAsync();
+
+            if (customerType != null)
+            {
+                customer.CustomerTypeId = customerType.CustomerTypeId;
+                customer.CustomerType = customerType;
+            }
 
             _context.Customers.Add(customer);
 
@@ -88,11 +98,18 @@ namespace PlantStoreAPI.Services
 
                 if (detailVoucher != null && detailVoucher.DateEnd > DateTime.Now)
                 {
-                    _context.VoucherApplied.Add(new VoucherApplied
+                    if (detailVoucher.VoucherType != null && detailVoucher.VoucherType.VoucherTypeName == "Normal")
                     {
-                        VoucherID = voucher.ID,
-                        CustomerID = customer.ID,
-                    });
+                        _context.VoucherApplied.Add(new VoucherApplied
+                        {
+                            VoucherID = voucher.ID,
+                            CustomerID = customer.ID,
+                        });
+                    }
+                    else
+                    {
+                        throw new Exception("This type of voucher does not exist");
+                    }
                 }
             }
 

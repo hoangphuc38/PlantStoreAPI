@@ -12,6 +12,7 @@ namespace PlantStoreAPI.Data
 
         }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<CustomerType> CustomersTypes { get; set; }
         public DbSet<ChatRoom> ChatRooms { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -22,7 +23,10 @@ namespace PlantStoreAPI.Data
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<FavouritePlant> FavouritePlants { get; set; }
+        public DbSet<PaymentMethod> PaymentMethods { get; set; }
+        public DbSet<PaymentType> PaymentTypes { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
+        public DbSet<VoucherType> VoucherTypes { get; set; }
         public DbSet<VoucherApplied> VoucherApplied { get; set; }
         public DbSet<WishList> WishLists { get; set; }       
 
@@ -31,6 +35,7 @@ namespace PlantStoreAPI.Data
             modelBuilder.Entity<Cart>().HasKey(v => new { v.CustomerID, v.ProductID });
             modelBuilder.Entity<OrderDetail>().HasKey(v => new { v.OrderID, v.ProductID });
             modelBuilder.Entity<Feedback>().HasKey(v => new { v.CustomerID, v.ProductID });
+            modelBuilder.Entity<Voucher>().HasKey(v => new { v.ID, v.VoucherTypeId });
             modelBuilder.Entity<VoucherApplied>().HasKey(v => new { v.VoucherID, v.CustomerID });
             modelBuilder.Entity<WishList>().HasKey(v => new { v.CustomerID, v.ProductID });
             modelBuilder.Entity<FavouritePlant>().HasKey(v => new { v.CustomerID, v.PlantName });
