@@ -11,23 +11,38 @@ namespace PlantStoreAPI.Model
 
         [Required, MaxLength(50)]
         public string? CustomerID { get; set; }
+
         public DateTime TimeCreated { get; set; }
+
         public double TotalPrice { get; set; }
-        [MaxLength(20)]
-        public string? PayMethod { get; set; }
+
         public DateTime DeliveryDate { get; set; }
+
         [MaxLength(20)]
         public string? DeliveryMethod { get; set; }
+
         public double ShippingCost { get; set; }
+
         [MaxLength(20)]
         public string Status { get; set; } = "Pending";
+
         [MaxLength(500)]
         public string? Note { get; set; }
+
         public string? Name { get; set; }
+
         public string? Phone { get; set; }
+
         public string? Address { get; set; }
+
         public bool IsPaid { get; set; }
+
         public string? VoucherID { get; set; }
+
+        public int? PaymentMethodId { get; set; }
+
+        [ForeignKey("PaymentMethodId")]
+        public virtual PaymentMethod? PaymentMethod { get; set; }
 
         //optional
         public Customer? Customer { get; set; }

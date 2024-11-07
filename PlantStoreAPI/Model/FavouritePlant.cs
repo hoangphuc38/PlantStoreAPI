@@ -6,7 +6,10 @@ namespace PlantStoreAPI.Model
     {
         [Key, MaxLength(50)]
         public string? CustomerID { get; set; }
+
         [Key]
         public string? PlantName { get; set; }
+
+        public string? PlantNameVie { get; set; }
     }
 }

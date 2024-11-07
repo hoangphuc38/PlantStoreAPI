@@ -141,15 +141,14 @@ namespace PlantStoreAPI.Services
 
             return orderResponses;
         }
-        public async Task<Order> Add(OrderVM orderVM)
-        {
+        public async Task<Order> Add(OrderVM orderVM, int paymentType)
+        {            
             var order = new Order
             {
                 OrderID = await AutoID(),
                 CustomerID = orderVM.CustomerID,
                 TimeCreated = DateTime.Now,
                 TotalPrice = orderVM.TotalPrice,
-                PayMethod = orderVM.PayMethod,
                 DeliveryMethod = orderVM.DeliveryMethod,
                 ShippingCost = orderVM.ShippingCost,
                 Status = "Pending",
@@ -160,6 +159,19 @@ namespace PlantStoreAPI.Services
                 VoucherID = orderVM.VoucherID,
                 IsPaid = false,
             };
+
+            if (paymentType != 1)
+            {
+                var paymentMethod = new PaymentMethod()
+                {
+                    PaymentTypeId = paymentType,
+                    PaymentStatus = 0 // default is 0 - unpaid => 1 - paid => 2 - error
+                };
+                _context.PaymentMethods.Add(paymentMethod);
+                await _context.SaveChangesAsync();
+
+                order.PaymentMethodId = paymentMethod.PaymentMethodId;
+            }
 
             switch (orderVM.DeliveryMethod?.ToUpper())
             {
@@ -191,7 +203,7 @@ namespace PlantStoreAPI.Services
                 {
                     _context.VoucherApplied.Remove(voucherDetail);
                 }
-            }
+            }            
 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();

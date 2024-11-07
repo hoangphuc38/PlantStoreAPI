@@ -359,6 +359,9 @@ namespace PlantStoreAPI.Migrations
                     b.Property<string>("PlantName")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("PlantNameVie")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("CustomerID", "PlantName");
 
                     b.ToTable("FavouritePlants");
@@ -456,9 +459,8 @@ namespace PlantStoreAPI.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("PayMethod")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<int?>("PaymentMethodId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
@@ -483,6 +485,8 @@ namespace PlantStoreAPI.Migrations
                     b.HasKey("OrderID");
 
                     b.HasIndex("CustomerID");
+
+                    b.HasIndex("PaymentMethodId");
 
                     b.ToTable("Orders");
                 });
@@ -584,6 +588,9 @@ namespace PlantStoreAPI.Migrations
                     b.Property<string>("Height")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<double?>("Price")
                         .HasColumnType("float");
 
@@ -591,6 +598,9 @@ namespace PlantStoreAPI.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ProductNameVie")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -818,7 +828,13 @@ namespace PlantStoreAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PlantStoreAPI.Model.PaymentMethod", "PaymentMethod")
+                        .WithMany()
+                        .HasForeignKey("PaymentMethodId");
+
                     b.Navigation("Customer");
+
+                    b.Navigation("PaymentMethod");
                 });
 
             modelBuilder.Entity("PlantStoreAPI.Model.OrderDetail", b =>

@@ -31,14 +31,14 @@ namespace PlantStoreAPI.Controllers
         }
 
         [HttpPost("new-order")]
-        public async Task<IActionResult> Add([FromBody] OrderVM order)
+        public async Task<IActionResult> Add([FromBody] OrderVM order, int paymentType)
         {
             try
             {
                 return Ok(new
                 {
                     success = true,
-                    data = await _repo.Add(order)
+                    data = await _repo.Add(order, paymentType)
                 });
             }
             catch (Exception ex)

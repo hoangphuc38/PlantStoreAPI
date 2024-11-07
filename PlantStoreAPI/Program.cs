@@ -7,6 +7,7 @@ using PlantStoreAPI.Data;
 using PlantStoreAPI.Hubs;
 using PlantStoreAPI.Model;
 using PlantStoreAPI.Repositories;
+using PlantStoreAPI.Repositories.Utils;
 using PlantStoreAPI.Services;
 using PlantStoreAPI.StaticServices;
 using PlantStoreAPI.ViewModel;
@@ -84,6 +85,7 @@ builder.Services.AddScoped<IFeedbackRepo, FeedbackRepo>();
 builder.Services.AddScoped<IStatRepo, StatRepo>();
 builder.Services.AddScoped<IVoucherRepo, VoucherRepo>();
 builder.Services.AddScoped<IWishListRepo, WishListRepo>();
+builder.Services.AddScoped<IVnPayService,  VnPayService>();
 
 builder.Services.AddCors(options =>
 {

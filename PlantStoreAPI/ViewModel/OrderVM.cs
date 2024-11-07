@@ -4,7 +4,6 @@
     {
         public string? CustomerID { get; set; }
         public double TotalPrice { get; set; }
-        public string? PayMethod { get; set; }
         public string? DeliveryMethod { get; set; }       
         public double ShippingCost { get; set; }
         public string? Note { get; set; }

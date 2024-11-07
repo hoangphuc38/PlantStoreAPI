@@ -48,13 +48,11 @@ namespace PlantStoreAPI.Helpers
             if (!checkSignature)
                 throw new Exception("Invalid Signature");
 
-            int paymentStatus = 0;
-
             paymentMethodVM.PaymentTransactionNo = vnPayTranId.ToString();
             paymentMethodVM.PaymentProvider = vnPayBankCode;
             paymentMethodVM.PaymentCartType = vnPayCartType;
             paymentMethodVM.PaymentDate = createdDate;
-            paymentMethodVM.PaymentStatus = paymentStatus;
+            paymentMethodVM.PaymentStatus = 0;
             paymentMethodVM.PaymentDescription = vnpOrderInfo;
 
             return paymentMethodVM;
